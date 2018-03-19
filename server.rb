@@ -16,3 +16,7 @@ get '/' do
   end
   erb :index
 end
+
+post '/' do
+
+end
