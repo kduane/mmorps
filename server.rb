@@ -18,5 +18,7 @@ get '/' do
 end
 
 post '/' do
-
+  @p_choice = params[choice]
+  @c_choice = []
+  
 end
