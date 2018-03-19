@@ -1,6 +1,7 @@
 require "sinatra"
 require "pry" if development? || test?
 require "sinatra/reloader" if development?
+require_relative 'game.rb'
 
 set :bind, '0.0.0.0'  # bind to all interfaces
 
@@ -14,11 +15,18 @@ get '/' do
   else
     session[:visit_count] += 1
   end
+
   erb :index
 end
 
-post '/' do
-  @p_choice = params[choice]
-  @c_choice = []
-  
+post '/choose' do
+  @game = Game.new(params[choice])
+  @game.determine_winner
+  if @game.result == "Computer"
+    session[:computer_score] += 1
+  elsif @game.result == "Player"
+    session[:player_score] += 1
+  else @game.result == "Tie"
+
+  end
 end
