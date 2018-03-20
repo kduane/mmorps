@@ -1,0 +1,29 @@
+<head>
+  <title>Rocks, Paper and Scissors for All
+  </title>
+</head>
+
+<h1>MMORPS</h1>
+  <p>
+    <% if session[:player_score] > 2 && session[:player_score] >= 2 * session[:computer_score] 
+
+  </p>
+
+<table>
+  <thead>
+    <tr>
+      <th> Player </th>
+      <th> Score </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> Human: </td>
+      <td> <%= session[:player_score] %> </td>
+    </tr>
+    <tr>
+      <td> Computer: </td>
+      <td> <%= session[:computer_score] %> </td>
+    </tr>
+  </tbody>
+</table>
