@@ -7,6 +7,7 @@ set :bind, '0.0.0.0'  # bind to all interfaces
 
 use Rack::Session::Cookie, {
   secret: "keep_it_secret_keep_it_safe"
+
 }
 
 get '/' do
@@ -19,14 +20,22 @@ get '/' do
   erb :index
 end
 
-post '/choose' do
-  @game = Game.new(params[choice])
+post '/' do
+  @game = Game.new(params[:choice])
   @game.determine_winner
   if @game.result == "Computer"
-    session[:computer_score] += 1
+    if session[:computer_score].nil?
+      session[:computer_score] = 1
+    else
+      session[:computer_score] += 1
+    end
   elsif @game.result == "Player"
-    session[:player_score] += 1
+    if session[:player_score].nil?
+      session[:player_score] = 1
+    else
+      session[:player_score] += 1
+    end
   else @game.result == "Tie"
-
   end
+  erb :index
 end
