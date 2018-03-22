@@ -11,13 +11,15 @@ use Rack::Session::Cookie, {
 }
 
 get '/' do
-  if session[:visit_count].nil?
-    session[:visit_count] = 1
+  if session[:player_score] != session[:computer_score] && session[:player_score] >=2
+    session[:winner] = "Player Wins"
+    erb :results
+  elsif session[:computer_score] != session[:player_score] && session[:computer_score] >=2
+    session[:winner] = "Computer Wins"
+    erb :results
   else
-    session[:visit_count] += 1
+    erb :index
   end
-
-  erb :index
 end
 
 post '/' do
@@ -29,13 +31,28 @@ post '/' do
     else
       session[:computer_score] += 1
     end
+    session[:message] = "Computer Wins!"
   elsif @game.result == "Player"
     if session[:player_score].nil?
       session[:player_score] = 1
     else
       session[:player_score] += 1
     end
-  else @game.result == "Tie"
+    session[:message] = "Player Wins!"
+  else
+    # @game.result == "Tie"
+    session[:message] = "It's a Tie!"
   end
   erb :index
+end
+
+post '/results' do
+  if params[:choice] == "Yes"
+    session[:message] = nil
+    session[:player_score] = nil
+    session[:computer_score] = nil
+  else
+    @url = "www.youtube.com/watch?v=Eo-KmOd3i7s"
+    redirect_to url
+  end
 end

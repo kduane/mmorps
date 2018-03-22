@@ -4,10 +4,6 @@
 </head>
 
 <h1>MMORPS</h1>
-  <p>
-    <% if session[:player_score] > 2 && session[:player_score] >= 2 * session[:computer_score] 
-
-  </p>
 
 <table>
   <thead>
@@ -27,3 +23,13 @@
     </tr>
   </tbody>
 </table>
+
+<p>
+  <%= session[:winner] %>
+</p>
+
+<form action="/results" method="post">
+  <h2>Would you like to play again?</h2>
+  <input type="submit" name="choice" value="Yes">
+  <input type="submit" name="choice" value="No">
+</form>
