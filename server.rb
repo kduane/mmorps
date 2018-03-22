@@ -6,15 +6,16 @@ require_relative 'game.rb'
 set :bind, '0.0.0.0'  # bind to all interfaces
 
 use Rack::Session::Cookie, {
-  secret: "keep_it_secret_keep_it_safe"
-
+  secret: "keep_it_secret_keep_it_safe",
 }
 
 get '/' do
-  if session[:player_score] != session[:computer_score] && session[:player_score] >=2
+  if session[:player_score].nil? && session[:computer_score].nil?
+    erb :index
+  elsif !session[:player_score].nil? && session[:player_score] >= 2
     session[:winner] = "Player Wins"
     erb :results
-  elsif session[:computer_score] != session[:player_score] && session[:computer_score] >=2
+  elsif !session[:computer_score].nil? && session[:computer_score] >= 2
     session[:winner] = "Computer Wins"
     erb :results
   else
@@ -44,15 +45,17 @@ post '/' do
     session[:message] = "It's a Tie!"
   end
   erb :index
+  redirect '/'
 end
 
 post '/results' do
-  if params[:choice] == "Yes"
-    session[:message] = nil
-    session[:player_score] = nil
-    session[:computer_score] = nil
+  if params[:yes_or_no] == "Yes"
+    session[:message] = ""
+    session[:player_score] = 0
+    session[:computer_score] = 0
+    redirect '/'
   else
-    @url = "www.youtube.com/watch?v=Eo-KmOd3i7s"
-    redirect_to url
+    url = "https://www.youtube.com/watch?v=Eo-KmOd3i7s"
+    redirect url
   end
 end
